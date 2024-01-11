@@ -46,19 +46,28 @@
     <div class="wrapper">
       <h2>LOCAL TAPAS</h2>
       <p></p>
-      <ul class="plates">
-        <li>Loading Tapas...</li>
-      </ul>
+      <ul class="plates"></ul>
       <form class="add-items">
-        <input type="text" name="item" placeholder="Item Name" required />
+        <input
+          type="text"
+          name="item"
+          placeholder="Item Name"
+          required
+          autofocus="true"
+        />
         <input type="submit" value="+ Add Item" />
       </form>
-      <button class="add-items">Clear All</button>
+      <button class="check-all">Check All</button>
+      <button class="uncheck-all">Uncheck All</button>
+      <button class="clear">Clear All</button>
     </div>
 
     <script>
       const addItems = document.querySelector(".add-items");
       const itemsList = document.querySelector(".plates");
+      const clearButton = document.querySelector(".clear");
+      const checkAllButton = document.querySelector(".check-all");
+      const uncheckAllButton = document.querySelector(".uncheck-all");
       const items = JSON.parse(localStorage.getItem("items")) || [];
 
       function addItem(e) {
@@ -102,8 +111,39 @@
         populateList(items, itemsList);
       }
 
+      function clearAll(e) {
+        localStorage.clear();
+        // location.reload();
+        // itemsList.innerHTML = `
+        //     <ul class="plates">
+        //         <li>Loading Tapas...</li>
+        //     </ul>
+        // `;
+        while (itemsList.firstChild) {
+          itemsList.removeChild(itemsList.firstChild);
+        }
+      }
+
+      function handleAll(e) {
+        if (e.target.matches(".check-all")) {
+          items.map((item) => {
+            item.done = true;
+          });
+        }
+        if (e.target.matches(".uncheck-all")) {
+          items.map((item) => {
+            item.done = false;
+          });
+        }
+        console.log(e);
+        populateList(items, itemsList);
+      }
+
       addItems.addEventListener("submit", addItem);
       itemsList.addEventListener("click", toggleDone);
+      clearButton.addEventListener("click", clearAll);
+      checkAllButton.addEventListener("click", handleAll);
+      uncheckAllButton.addEventListener("click", handleAll);
 
       populateList(items, itemsList);
     </script>
