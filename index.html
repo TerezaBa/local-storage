@@ -112,7 +112,6 @@
       }
 
       function clearAll(e) {
-        localStorage.clear();
         // location.reload();
         // itemsList.innerHTML = `
         //     <ul class="plates">
@@ -122,6 +121,9 @@
         while (itemsList.firstChild) {
           itemsList.removeChild(itemsList.firstChild);
         }
+        localStorage.clear();
+
+        items.length = 0;
       }
 
       function handleAll(e) {
